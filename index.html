@@ -22,54 +22,86 @@
             --surface2: #12121a;
             --border: rgba(255, 255, 255, 0.06);
             --border2: rgba(255, 255, 255, 0.12);
-            --accent: #00e5ff;
-            --accent2: #7c3aed;
+            --accent: #22d3ee;
+            --accent-rgb: 34, 211, 238;
+            --accent2: #8b5cf6;
+            --accent2-rgb: 139, 92, 246;
             --accent3: #f59e0b;
+            --accent3-rgb: 245, 158, 11;
             --text: #e8e8f0;
-            --muted: #6b6b80;
-            --white: #ffffff;
+            --muted: #8a8a9e;
+            --heading: #ffffff;
             --red: #ef4444;
+            --red-rgb: 239, 68, 68;
             --green: #22c55e;
+            --green-rgb: 34, 197, 94;
+            --on-accent: #04141a;
+            --shadow: rgba(0, 0, 0, 0.45);
+            color-scheme: dark;
         }
-        
+
+        :root[data-theme="light"] {
+            --bg: #fafafa;
+            --surface: #ffffff;
+            --surface2: #f2f3f6;
+            --border: rgba(10, 10, 20, 0.09);
+            --border2: rgba(10, 10, 20, 0.16);
+            --accent: #0e7490;
+            --accent-rgb: 14, 116, 144;
+            --accent2: #6d28d9;
+            --accent2-rgb: 109, 40, 217;
+            --accent3: #b45309;
+            --accent3-rgb: 180, 83, 9;
+            --text: #33333f;
+            --muted: #6b6b7d;
+            --heading: #0c0c14;
+            --red: #dc2626;
+            --red-rgb: 220, 38, 38;
+            --green: #15803d;
+            --green-rgb: 21, 128, 61;
+            --on-accent: #ffffff;
+            --shadow: rgba(20, 20, 30, 0.08);
+            color-scheme: light;
+        }
+
         html {
             scroll-behavior: smooth;
             font-size: 16px
         }
-        
+
         body {
             font-family: 'DM Sans', sans-serif;
             background: var(--bg);
             color: var(--text);
             overflow-x: hidden;
-            cursor: none
+            transition: background 0.4s ease, color 0.4s ease
         }
-        /* CURSOR */
-        
-        #cursor {
-            position: fixed;
-            width: 12px;
-            height: 12px;
-            background: var(--accent);
+        /* THEME TOGGLE */
+
+        .theme-toggle {
+            width: 40px;
+            height: 40px;
             border-radius: 50%;
-            pointer-events: none;
-            z-index: 9999;
-            transform: translate(-50%, -50%);
-            transition: transform 0.1s, background 0.2s;
-            mix-blend-mode: screen
+            border: 1px solid var(--border2);
+            background: var(--surface2);
+            color: var(--text);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: border-color 0.3s, transform 0.3s, color 0.3s;
+            flex-shrink: 0
         }
-        
-        #cursor-ring {
-            position: fixed;
-            width: 36px;
-            height: 36px;
-            border: 1px solid var(--accent);
-            border-radius: 50%;
-            pointer-events: none;
-            z-index: 9998;
-            transform: translate(-50%, -50%);
-            transition: all 0.15s ease;
-            opacity: 0.5
+
+        .theme-toggle:hover {
+            border-color: var(--accent);
+            color: var(--accent);
+            transform: rotate(15deg)
+        }
+
+        .theme-toggle svg {
+            width: 18px;
+            height: 18px
         }
         /* SCROLLBAR */
         
@@ -98,8 +130,14 @@
             justify-content: space-between;
             align-items: center;
             backdrop-filter: blur(20px);
+            border-bottom: 1px solid transparent;
+            transition: background 0.4s, border-color 0.4s
+        }
+
+        nav.scrolled {
+            background: var(--surface);
             border-bottom: 1px solid var(--border);
-            transition: all 0.4s
+            box-shadow: 0 10px 30px -15px var(--shadow)
         }
         
         .nav-logo {
@@ -111,6 +149,12 @@
             -webkit-text-fill-color: transparent
         }
         
+        .nav-right {
+            display: flex;
+            align-items: center;
+            gap: 2.5rem
+        }
+
         .nav-links {
             display: flex;
             gap: 2.5rem;
@@ -160,7 +204,7 @@
         .hero-bg {
             position: absolute;
             inset: 0;
-            background: radial-gradient(ellipse 60% 50% at 70% 50%, rgba(0, 229, 255, 0.08) 0%, transparent 70%), radial-gradient(ellipse 40% 40% at 20% 60%, rgba(124, 58, 237, 0.1) 0%, transparent 60%)
+            background: radial-gradient(ellipse 60% 50% at 70% 50%, rgba(var(--accent-rgb), 0.08) 0%, transparent 70%), radial-gradient(ellipse 40% 40% at 20% 60%, rgba(var(--accent2-rgb), 0.1) 0%, transparent 60%)
         }
         
         .grid-overlay {
@@ -227,7 +271,7 @@
         
         .hero-name .line1 {
             display: block;
-            color: var(--white)
+            color: var(--heading)
         }
         
         .hero-name .line2 {
@@ -260,21 +304,22 @@
         
         .btn-primary {
             background: var(--accent);
-            color: #000;
+            color: var(--on-accent);
             padding: 0.85rem 2.2rem;
             border: none;
             font-family: 'DM Sans', sans-serif;
             font-weight: 500;
             font-size: 0.9rem;
             letter-spacing: 1px;
-            cursor: none;
+            cursor: pointer;
             text-decoration: none;
             transition: all 0.3s;
             clip-path: polygon(0 0, calc(100% - 12px) 0, 100% 12px, 100% 100%, 12px 100%, 0 calc(100% - 12px))
         }
         
         .btn-primary:hover {
-            background: var(--white);
+            background: var(--heading);
+            color: var(--bg);
             transform: translateY(-3px)
         }
         
@@ -285,7 +330,7 @@
             font-family: 'DM Sans', sans-serif;
             font-size: 0.9rem;
             letter-spacing: 1px;
-            cursor: none;
+            cursor: pointer;
             text-decoration: none;
             transition: all 0.3s;
             clip-path: polygon(0 0, calc(100% - 12px) 0, 100% 12px, 100% 100%, 12px 100%, 0 calc(100% - 12px))
@@ -315,7 +360,7 @@
             font-family: 'Bebas Neue', sans-serif;
             font-size: 2.8rem;
             line-height: 1;
-            color: var(--white)
+            color: var(--heading)
         }
         
         .stat-num span {
@@ -398,7 +443,7 @@
             font-family: 'Bebas Neue', sans-serif;
             font-size: clamp(2.5rem, 5vw, 4.5rem);
             line-height: 1;
-            color: var(--white);
+            color: var(--heading);
             margin-bottom: 0.5rem
         }
         /* ABOUT */
@@ -497,8 +542,8 @@
             align-items: center;
             gap: 0.5rem;
             padding: 0.5rem 1rem;
-            border: 1px solid rgba(34, 197, 94, 0.3);
-            background: rgba(34, 197, 94, 0.05);
+            border: 1px solid rgba(var(--green-rgb), 0.3);
+            background: rgba(var(--green-rgb), 0.05);
             font-family: 'JetBrains Mono', monospace;
             font-size: 0.7rem;
             letter-spacing: 2px;
@@ -577,7 +622,7 @@
         .skill-name {
             font-family: 'Bebas Neue', sans-serif;
             font-size: 1.8rem;
-            color: var(--white);
+            color: var(--heading);
             margin-bottom: 1rem
         }
         
@@ -597,9 +642,9 @@
         }
         
         .tag.primary {
-            border-color: rgba(0, 229, 255, 0.3);
+            border-color: rgba(var(--accent-rgb), 0.3);
             color: var(--accent);
-            background: rgba(0, 229, 255, 0.05)
+            background: rgba(var(--accent-rgb), 0.05)
         }
         /* EXPERIENCE */
         
@@ -654,8 +699,8 @@
             display: inline-block;
             margin-top: 0.5rem;
             padding: 0.2rem 0.6rem;
-            background: rgba(0, 229, 255, 0.1);
-            border: 1px solid rgba(0, 229, 255, 0.2);
+            background: rgba(var(--accent-rgb), 0.1);
+            border: 1px solid rgba(var(--accent-rgb), 0.2);
             font-size: 0.65rem;
             letter-spacing: 2px;
             color: var(--accent);
@@ -665,7 +710,7 @@
         .exp-role {
             font-family: 'Bebas Neue', sans-serif;
             font-size: 1.8rem;
-            color: var(--white);
+            color: var(--heading);
             line-height: 1;
             margin-bottom: 0.3rem
         }
@@ -705,8 +750,8 @@
             gap: 0.4rem;
             margin-top: 1rem;
             padding: 0.4rem 0.8rem;
-            background: rgba(245, 158, 11, 0.1);
-            border: 1px solid rgba(245, 158, 11, 0.2);
+            background: rgba(var(--accent3-rgb), 0.1);
+            border: 1px solid rgba(var(--accent3-rgb), 0.2);
             font-family: 'JetBrains Mono', monospace;
             font-size: 0.65rem;
             color: var(--accent3);
@@ -767,13 +812,13 @@
         }
         
         .project-card:hover .project-num {
-            color: rgba(0, 229, 255, 0.15)
+            color: rgba(var(--accent-rgb), 0.15)
         }
         
         .project-name {
             font-family: 'Bebas Neue', sans-serif;
             font-size: 1.6rem;
-            color: var(--white);
+            color: var(--heading);
             margin-bottom: 0.8rem
         }
         
@@ -824,8 +869,8 @@
             top: 1.5rem;
             right: 1.5rem;
             padding: 0.25rem 0.6rem;
-            background: rgba(0, 229, 255, 0.1);
-            border: 1px solid rgba(0, 229, 255, 0.2);
+            background: rgba(var(--accent-rgb), 0.1);
+            border: 1px solid rgba(var(--accent-rgb), 0.2);
             font-family: 'JetBrains Mono', monospace;
             font-size: 0.6rem;
             letter-spacing: 2px;
@@ -906,7 +951,7 @@
             right: -20%;
             width: 600px;
             height: 600px;
-            background: radial-gradient(circle, rgba(0, 229, 255, 0.05) 0%, transparent 70%);
+            background: radial-gradient(circle, rgba(var(--accent-rgb), 0.05) 0%, transparent 70%);
             pointer-events: none
         }
         
@@ -921,7 +966,7 @@
         .contact-headline {
             font-family: 'Bebas Neue', sans-serif;
             font-size: clamp(2rem, 4vw, 3.5rem);
-            color: var(--white);
+            color: var(--heading);
             line-height: 1.1;
             margin-bottom: 1.5rem
         }
@@ -1027,7 +1072,7 @@
             font-size: 0.75rem;
             letter-spacing: 3px;
             text-transform: uppercase;
-            cursor: none;
+            cursor: pointer;
             transition: all 0.3s;
             margin-top: 0.5rem;
             clip-path: polygon(0 0, calc(100% - 10px) 0, 100% 10px, 100% 100%, 10px 100%, 0 calc(100% - 10px))
@@ -1035,7 +1080,7 @@
         
         .btn-send:hover {
             background: var(--accent);
-            color: #000
+            color: var(--on-accent)
         }
         /* FOOTER */
         
@@ -1151,19 +1196,21 @@
 
 <body>
 
-    <div id="cursor"></div>
-    <div id="cursor-ring"></div>
-
     <!-- NAV -->
     <nav id="navbar">
         <div class="nav-logo">YT</div>
-        <ul class="nav-links">
-            <li><a href="#about">About</a></li>
-            <li><a href="#skills">Skills</a></li>
-            <li><a href="#experience">Experience</a></li>
-            <li><a href="#projects">Projects</a></li>
-            <li><a href="#contact">Contact</a></li>
-        </ul>
+        <div class="nav-right">
+            <ul class="nav-links">
+                <li><a href="#about">About</a></li>
+                <li><a href="#skills">Skills</a></li>
+                <li><a href="#experience">Experience</a></li>
+                <li><a href="#projects">Projects</a></li>
+                <li><a href="#contact">Contact</a></li>
+            </ul>
+            <button class="theme-toggle" id="theme-toggle" type="button" aria-label="Switch to light mode" title="Switch theme">
+                <svg id="theme-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></svg>
+            </button>
+        </div>
     </nav>
 
     <!-- HERO -->
@@ -1587,7 +1634,7 @@
     <!-- FOOTER -->
     <footer>
         <div class="footer-brand">Yashwant Thakare</div>
-        <div class="footer-copy">© 2025 · Mumbai, India · Open to Work</div>
+        <div class="footer-copy">© 2026 · Mumbai, India · Open to Work</div>
         <div class="footer-links">
             <a href="https://github.com/Yash-thakare" target="_blank">GitHub</a>
             <a href="https://www.linkedin.com/in/yashwant-thakare-1a77022a4/" target="_blank">LinkedIn</a>
@@ -1596,37 +1643,28 @@
     </footer>
 
     <script>
-        // Custom Cursor
-        const cursor = document.getElementById('cursor');
-        const ring = document.getElementById('cursor-ring');
-        let mx = 0,
-            my = 0,
-            rx = 0,
-            ry = 0;
-        document.addEventListener('mousemove', e => {
-            mx = e.clientX;
-            my = e.clientY;
-            cursor.style.left = mx + 'px';
-            cursor.style.top = my + 'px'
-        });
+        // Theme toggle (dark / light)
+        const root = document.documentElement;
+        const themeToggle = document.getElementById('theme-toggle');
+        const themeIcon = document.getElementById('theme-icon');
 
-        function animRing() {
-            rx += (mx - rx) * 0.12;
-            ry += (my - ry) * 0.12;
-            ring.style.left = rx + 'px';
-            ring.style.top = ry + 'px';
-            requestAnimationFrame(animRing)
+        const sunPath = '<circle cx="12" cy="12" r="4"></circle><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"></path>';
+        const moonPath = '<path d="M20 14.5A8.5 8.5 0 1 1 9.5 4a6.5 6.5 0 0 0 10.5 10.5z"></path>';
+
+        function applyTheme(theme) {
+            root.setAttribute('data-theme', theme);
+            const switchingTo = theme === 'dark' ? 'light' : 'dark';
+            themeIcon.innerHTML = theme === 'dark' ? sunPath : moonPath;
+            themeToggle.setAttribute('aria-label', `Switch to ${switchingTo} mode`);
+            themeToggle.setAttribute('title', `Switch to ${switchingTo} mode`);
         }
-        animRing();
-        document.querySelectorAll('a,button,.skill-cell,.project-card,.contact-link-item,.highlight-card').forEach(el => {
-            el.addEventListener('mouseenter', () => {
-                ring.style.transform = 'translate(-50%,-50%) scale(2)';
-                ring.style.opacity = '0.2'
-            });
-            el.addEventListener('mouseleave', () => {
-                ring.style.transform = 'translate(-50%,-50%) scale(1)';
-                ring.style.opacity = '0.5'
-            });
+
+        let currentTheme = 'dark';
+        applyTheme(currentTheme);
+
+        themeToggle.addEventListener('click', () => {
+            currentTheme = currentTheme === 'dark' ? 'light' : 'dark';
+            applyTheme(currentTheme);
         });
 
         // Scroll Reveal
@@ -1642,7 +1680,7 @@
         // Nav scroll effect
         window.addEventListener('scroll', () => {
             const nav = document.getElementById('navbar');
-            nav.style.background = window.scrollY > 80 ? 'rgba(4,4,7,0.97)' : 'transparent';
+            nav.classList.toggle('scrolled', window.scrollY > 80);
         });
 
         // Contact form
